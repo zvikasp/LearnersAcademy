@@ -1,28 +1,55 @@
 package com.hibernate;
 
+import java.util.Properties;
+
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.service.ServiceRegistry;
 
+import com.learner.model.Grade;
+import com.learner.model.Student;
+import com.learner.model.Subject;
+import com.learner.model.Teacher;
+import com.learner.model.User;
+
+/**
+ * Java based configuration
+ * 
+ */
 public class HibernateUtil {
-
-	private final static SessionFactory sessionFactory;
-
-	static {
-		try {
-			StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
-					.configure("hibernate.cfg.xml").build();
-			Metadata metaData = new MetadataSources(standardRegistry).getMetadataBuilder().build();
-			sessionFactory = metaData.getSessionFactoryBuilder().build();
-		} catch (Throwable th) {
-			throw new ExceptionInInitializerError(th);
-		}
-	}
+	private static SessionFactory sessionFactory;
 
 	public static SessionFactory getSessionFactory() {
+		if (sessionFactory == null) {
+			try {
+				Configuration configuration = new Configuration();
+				// Hibernate settings equivalent to hibernate.cfg.xml's properties
+				Properties settings = new Properties();
+				settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
+				settings.put(Environment.URL, "jdbc:mysql://localhost:3306/learnersAcademy?useSSL=false");
+				settings.put(Environment.USER, "root");
+				settings.put(Environment.PASS, "Pasword@mysql1");
+				settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
+				settings.put(Environment.SHOW_SQL, "true");
+				settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+				settings.put(Environment.HBM2DDL_AUTO, "update");
+				configuration.setProperties(settings);
+				configuration.addAnnotatedClass(User.class);
+				configuration.addAnnotatedClass(Grade.class);
+				configuration.addAnnotatedClass(Student.class);
+				configuration.addAnnotatedClass(Subject.class);
+				configuration.addAnnotatedClass(Teacher.class);
+				ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+						.applySettings(configuration.getProperties()).build();
+				System.out.println("Hibernate Java Config serviceRegistry created");
+				sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+				return sessionFactory;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return sessionFactory;
 	}
-
 }

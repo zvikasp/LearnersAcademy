@@ -1,4 +1,4 @@
-package com.learner.App;
+package com.learner.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,24 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class Logout
+ * Servlet implementation class LogoutServlet
  */
-@WebServlet("/Logout")
-public class Logout extends HttpServlet {
+@WebServlet("/logout")
+public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public Logout() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+       
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
@@ -37,7 +25,7 @@ public class Logout extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.println("<html><body>");
 		out.println("Logged out successfully<br>");
-		RequestDispatcher rd = request.getRequestDispatcher("login.html");
+		RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 		rd.include(request, response);
 		out.println("</body></html>");
 		out.close();

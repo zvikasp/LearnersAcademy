@@ -1,4 +1,4 @@
-package com.learner.App;
+package com.learner.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,24 +40,21 @@ public class LearnersApp extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-
 		HttpSession loginSession = request.getSession(false);
 		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 		RequestDispatcher rd = null;
 		if (loginSession == null) {
-			rd = request.getRequestDispatcher("login.html");
+			rd = request.getRequestDispatcher("index.jsp");
 			rd.include(request, response);
 			out.close();
 			return;
 		} else {
-			String username = (String) loginSession.getAttribute("username");
 			out.print("<html><head>");
 			out.print("<title>Learner's Academy</title>");
 			out.print("<style>table, td, th {border: 1px solid black;}");
 			out.print("table {border-collapse: collapse;}</style>");
 			out.print("</head><body>");
-			out.print("<h3>Welcome " + username + "&nbsp;&nbsp;&nbsp;");
-			out.print("<a href='Logout'>Logout</a>");
+			out.print("<a href='home.jsp'>Home Page</a>");
 			out.print("</h3>");
 		}
 
@@ -67,9 +64,9 @@ public class LearnersApp extends HttpServlet {
 			// using HQL
 			@SuppressWarnings("unchecked")
 			List<Grade> list = session.createQuery("from Grade").list();
-			out.print("<b>Learner's Academy Class Information</b><br><br>");
+			out.print("<p><b>Learner's Academy Class Information</b></p><br><br>");
 			for (Grade grade : list) {
-				out.print("<b>" + grade.getClsId() + "</b>.&nbsp;<b>" + grade.getName() + "</b>");
+				out.print("<b>" + grade.getId() + "</b>.&nbsp;<b>" + grade.getName() + "</b>");
 				out.print("<br><br>");
 
 				// Subjects

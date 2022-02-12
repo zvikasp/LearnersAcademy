@@ -10,27 +10,33 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+/**
+ * User.java This is a model class represents a Grade entity
+ *
+ */
+
 @Entity
 public class Grade {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int clsId;
+	private int id;
 	private String name;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "clsId")
+	@JoinColumn(name = "classId")
 	private List<Student> students;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "clsId")
+	@JoinColumn(name = "classId")
 	private List<Subject> subjects;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "clsId")
+	@JoinColumn(name = "classId")
 	private List<Teacher> teachers;
 
 	public Grade() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	public Grade(String name) {
@@ -38,8 +44,14 @@ public class Grade {
 		this.name = name;
 	}
 
-	public int getClsId() {
-		return clsId;
+	public Grade(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 	public String getName() {
@@ -58,16 +70,16 @@ public class Grade {
 		return teachers;
 	}
 
-	public void setStudents(List<Student> students) {
-		this.students = students;
-	}
-
-	public void setClsId(int clsId) {
-		this.clsId = clsId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setStudents(List<Student> students) {
+		this.students = students;
 	}
 
 	public void setSubjects(List<Subject> subjects) {
@@ -78,8 +90,4 @@ public class Grade {
 		this.teachers = teachers;
 	}
 
-	@Override
-	public String toString() {
-		return "Class [clsId=" + clsId + ", name=" + name + "]";
-	}	
 }
